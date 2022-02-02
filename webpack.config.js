@@ -4,6 +4,13 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
 const TerserPlugin = require("terser-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
+// dans le but de pouvoir importer un fichier html dans un js. (TAF.002)
+// var nodeModules = {};
+// fs.readdirSync(path.resolve(__dirname, "node_modules"))
+//   .filter((x) => [".bin"].indexOf(x) === -1)
+//   .forEach((mod) => {
+//     nodeModules[mod] = `commonjs ${mod}`;
+//   });
 
 // on récupère la valeur de NODE_ENV
 const env = process.env.NODE_ENV;
@@ -12,7 +19,7 @@ const devMode = process.env.NODE_ENV !== "production";
 
 const plugins = [];
 
-// enable in production only
+// Enable in production only
 plugins.push(
   new MiniCssExtractPlugin({
     filename: "./css/[name].css",
@@ -25,6 +32,17 @@ plugins.push(new HtmlWebpackPlugin());
 console.log("devMode", devMode);
 module.exports = {
   plugins,
+  // TAF.002
+  //target: "node",
+  // externals: nodeModules,
+  // necessaire pour faire => import * as fs from "fs";
+  // resolve: {
+  //   fallback: {
+  //     fs: false,
+  //   },
+  // },
+  //utile pour que la page se rechage.
+  target: "web",
   mode: env || "development", // On définit le mode en fonction de la valeur de NODE_ENV
   entry: {
     "my-custom-page": "./src/js/script.js",
@@ -33,7 +51,7 @@ module.exports = {
     path: path.resolve(__dirname, "../"),
     filename: "./js/[name].js",
   },
-  devtool: devMode ? "inline-source-map" : false,
+  //devtool: devMode ? "inline-source-map" : false,
   module: {
     rules: [
       //règles de compilations pour les fichiers .js
@@ -44,6 +62,7 @@ module.exports = {
           loader: "babel-loader",
           options: {
             presets: ["@babel/preset-env"],
+            //presets: ["@babel/plugin-syntax-jsx"],
           },
         },
       },
@@ -110,6 +129,7 @@ module.exports = {
           { loader: "image-webpack-loader" },
         ],
       },
+      // chargement des fichiers svg
       {
         test: /\.svg$/i,
         use: [
@@ -126,10 +146,23 @@ module.exports = {
           { loader: "image-webpack-loader" },
         ],
       },
+      // chargement des fichiers htmls;
+      {
+        test: /\.html$/i,
+        loader: "html-loader",
+      },
     ],
   },
   devServer: {
-    contentBase: path.resolve(__dirname, "./public"),
+    //contentBase: path.resolve(__dirname, "./public"),
+    compress: false,
+    hot: true,
+    //liveReload: true,
+    // watchOptions: {
+    //   //poll: true,
+    //   poll: 1000,
+    // },
+    // watchContentBase: true,
     // historyApiFallback: true,
     // writeToDisk: true,
     // port: 3000,
