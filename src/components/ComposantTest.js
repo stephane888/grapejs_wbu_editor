@@ -6,7 +6,7 @@ class compts {
     this.addBootstrapCanvasStyle();
     this.addTraitEditText();
     this.addTraitHref();
-    this.AddTemplatesV2();
+    //this.AddTemplatesV2();
     this.addBootstrapDocument();
   }
 
@@ -58,7 +58,7 @@ class compts {
               value: "Votre titre ici"
             }
           ],
-          content: `Beginner ....`
+          content: `Beginner d....`
         }
       ]
     });
@@ -83,11 +83,11 @@ class compts {
       //
       onEvent({ elInput, component, event }) {
         const inputType = elInput.querySelector(".wbu-textarea");
-        const parser = document.createElement('div');
+        const parser = document.createElement("div");
         //parser.innerHTML = component.toHTML();
         //var valeur = parser.firstChild;
-       if (inputType) {        
-         component.set("content", inputType.value);
+        if (inputType) {
+          component.set("content", inputType.value);
         }
         //console.log("VALEUR", valeur);
         console.log("component : ", component);
@@ -95,7 +95,7 @@ class compts {
       },
       //
       onUpdate({ elInput, component }) {
-        var content = component.get('content');
+        var content = component.get("content");
         const inputType = elInput.querySelector(".wbu-textarea");
         inputType.value = content;
       }
