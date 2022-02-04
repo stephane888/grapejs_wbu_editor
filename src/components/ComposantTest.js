@@ -40,13 +40,13 @@ class compts {
           type: "text",
           name: "title",
           label: "Attribue title",
-          value: "humm",
-        },
+          value: "humm"
+        }
       ],
       components: [
         {
           type: "div",
-          content: `<img src="http://v2lesroisdelareno.kksa/sites/default/files/styles/domaine_370x222/public/2021-03/AdobeStock_191790836-1.jpeg" />  `,
+          content: `<img src="http://v2lesroisdelareno.kksa/sites/default/files/styles/domaine_370x222/public/2021-03/AdobeStock_191790836-1.jpeg" />  `
         },
         {
           type: "div",
@@ -55,12 +55,12 @@ class compts {
             {
               type: "wbu-content-titre",
               label: "Attribue title",
-              value: "Votre titre ici",
-            },
+              value: "Votre titre ici"
+            }
           ],
-          content: `Beginner ....`,
-        },
-      ],
+          content: `Beginner ....`
+        }
+      ]
     });
   }
 
@@ -83,15 +83,22 @@ class compts {
       //
       onEvent({ elInput, component, event }) {
         const inputType = elInput.querySelector(".wbu-textarea");
-        if (inputType) component.replaceWith(inputType.value);
+        const parser = document.createElement('div');
+        //parser.innerHTML = component.toHTML();
+        //var valeur = parser.firstChild;
+       if (inputType) {        
+         component.set("content", inputType.value);
+        }
+        //console.log("VALEUR", valeur);
         console.log("component : ", component);
         console.log("inputType : ", inputType);
       },
       //
       onUpdate({ elInput, component }) {
-        const collection = component.components();
-        console.log("onUpdate : ", collection);
-      },
+        var content = component.get('content');
+        const inputType = elInput.querySelector(".wbu-textarea");
+        inputType.value = content;
+      }
     });
   }
 
@@ -108,7 +115,7 @@ class compts {
           ? traitOpts
           : [
               { id: "url", name: "URL" },
-              { id: "email", name: "Email" },
+              { id: "email", name: "Email" }
             ];
         console.log("traitOpts : ", traitOpts);
         // Create a new element container and add some content
@@ -165,7 +172,7 @@ class compts {
             break;
         }
         component.addAttributes({ href });
-      },
+      }
     });
   }
 
